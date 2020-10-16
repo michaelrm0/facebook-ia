@@ -5,7 +5,7 @@ PAGE_ACCESS_TOKEN = 'EAAGJKF6IdgcBAEj2EDnoIC49TZCLkmKL2Wgjl7rPSZAsOMocYRUhkPP9dK
 app = Flask(__name__)
 
 #Creamos la ruta
-@app.route('/', methods = ['GET', 'POST'])
+@app.route('/webhook', methods = ['GET', 'POST'])
 def webhook():
     if request.method == 'GET':
         '''
