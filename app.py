@@ -19,10 +19,8 @@ def webhook():
         #devolvemos 200 en caso sea exitoso
         return '400'
     else:        
-        print(request.data)
         #Guardamos la información de fb en un json        
-        dato = request.data
-        data = json.loads(dato)
+        data = json.loads(request.data)
         #Guardamos los eventos de mensajería
         messaging_events = data['entry'][0]['messaging']
         #Entramos a todos los eventos
@@ -35,9 +33,10 @@ def webhook():
             una imagen y puede que falle el código ya que sino 
             sería ['message']['text']
             '''
-            text_input = message['message'].get['text']
+            text_input = message['message'].get('text')
             #El format sirve para poner los datos en las llaves
             print('Mensaje del usuario_ID {} - {}'.format(user_id, text_input))
+
         return '200'
         
 if __name__ == '__main__':
