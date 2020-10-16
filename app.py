@@ -2,8 +2,9 @@ from flask import Flask, request
 from bot import Bot
 
 import json
+import os
 
-PAGE_ACCESS_TOKEN = 'EAAGJKF6IdgcBACNkGj6ZBLoCpXqMjYAF1AIi5vV56UZBrUt4KsUD6XPRFLS3ZBjjkxgTgDHr1rmXQOhqFAMyO8qcOKtc7YIUSZBtQJ456ATmHQtLU7nlYCwZCwf1kYnijZBZA7FntujVG4X6W0UXfEhesVooePM2ZBuHE4SzPgNYSI33yoZBkx5Cn'
+PAGE_ACCESS_TOKEN = os.environ['PAGE_ACCESS_TOKEN']
 
 GREETINGS = ['hola', 'cómo estás', 'buenas']
 
