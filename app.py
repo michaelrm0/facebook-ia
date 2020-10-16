@@ -1,7 +1,12 @@
 from flask import Flask, request
+from bot import Bot
+
 import json
 
-PAGE_ACCESS_TOKEN = 'EAAGJKF6IdgcBAOrBeD0tIUs8jZCLtlIkxlFuWWLMvA5RVUEILZAJKl5AnJZAZCRrOpgWjZAbSWG79MNKp9AkeNSkIm9QDR8TZAZCTrOf5CxYOyBxL98ERHdr7gJeC8Cy2RIg2nZCo4etcN2wSWXE6ZA4oue14nhqh0N94AD4oqd7rZAYsHpiK1ZC4j1'
+PAGE_ACCESS_TOKEN = 'EAAGJKF6IdgcBACNkGj6ZBLoCpXqMjYAF1AIi5vV56UZBrUt4KsUD6XPRFLS3ZBjjkxgTgDHr1rmXQOhqFAMyO8qcOKtc7YIUSZBtQJ456ATmHQtLU7nlYCwZCwf1kYnijZBZA7FntujVG4X6W0UXfEhesVooePM2ZBuHE4SzPgNYSI33yoZBkx5Cn'
+
+GREETINGS = ['hola', 'cómo estás', 'buenas']
+
 app = Flask(__name__)
 
 #Creamos la ruta
@@ -20,9 +25,11 @@ def webhook():
         return '400'
     else:        
         #Guardamos la información de fb en un json        
+        print(request.data)
         data = json.loads(request.data)
         #Guardamos los eventos de mensajería
         messaging_events = data['entry'][0]['messaging']
+        bot = Bot(PAGE_ACCESS_TOKEN)
         #Entramos a todos los eventos
         for message in messaging_events:
             #Obtenemos el id del emisor
@@ -34,8 +41,14 @@ def webhook():
             sería ['message']['text']
             '''
             text_input = message['message'].get('text')
+            response_text = 'Me encuentro en proceso de aprendizaje 😒'
+            #Si el texto ingresado forma parte del array GREETINGS mostrar los sgte
+            if text_input in GREETINGS:
+                response_text = 'Hola. Bienvenido te habla la computadora, decir aua 😁'
             #El format sirve para poner los datos en las llaves
             print('Mensaje del usuario_ID {} - {}'.format(user_id, text_input))
+            #bot.send_text_message(user_id, 'Procesando...')
+            bot.send_text_message(user_id, response_text)
 
         return '200'
         
