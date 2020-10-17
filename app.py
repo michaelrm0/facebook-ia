@@ -4,27 +4,39 @@ from bot import Bot
 import json
 import os
 
-PAGE_ACCESS_TOKEN = os.environ['PAGE_ACCESS_TOKEN']
+PAGE_ACCESS_TOKEN = os.environ.get('PAGE_ACCESS_TOKEN')
+#PAGE_ACCESS_TOKEN = 'EAAGJKF6IdgcBAPvMCTGPZA7OlvmgqMHEj1rjkgSBXkZB1u2wl0iuZB2ROK76jlQFdBxQDw4OKjT6yaZA9MJQCZBaC2mZABSydKcM42YR1AuVh9DZAMmOTA7sEUOKXZARQbNXR2ZBd1iO4mZAAzACZAEbx4Jkx2nENjCh3l99Po35a3HF8jCqZBSKTqmB'
 
 GREETINGS = ['hola', 'cómo estás', 'buenas']
 
 app = Flask(__name__)
 
 #Creamos la ruta
-@app.route('/webhook', methods = ['GET', 'POST'])
+@app.route('/', methods = ['GET', 'POST'])
 def webhook():
     if request.method == 'GET':
         '''
         Necesitamos validar el token para que pueda haber un puente de
         enlace con messenger
         '''
+        #VERIFY_TOKEN = 'HolaMundoCruel'
+        #MODE = 'subscribe'
+        VERIFY_TOKEN = os.environ.get('VERIFY_TOKEN')
+        MODE = os.environ.get('MODE')
+
         token = request.args.get('hub.verify_token')
         challenge = request.args.get('hub.challenge')
-        if token == 'secret':
-            return str(challenge)
+        mode = request.args.get('hub.mode')
+
+
+        if mode == MODE and token == VERIFY_TOKEN:
+            print(token)
+            print(challenge)
+            print(mode)
+            return str(challenge)            
         #devolvemos 200 en caso sea exitoso
-        return '400'
-    else:        
+        return '200'
+    elif request.method == 'POST':        
         #Guardamos la información de fb en un json        
         print(request.data)
         data = json.loads(request.data)
@@ -50,7 +62,6 @@ def webhook():
             print('Mensaje del usuario_ID {} - {}'.format(user_id, text_input))
             #bot.send_text_message(user_id, 'Procesando...')
             bot.send_text_message(user_id, response_text)
-
         return '200'
         
 if __name__ == '__main__':
